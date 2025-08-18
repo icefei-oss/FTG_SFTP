@@ -1,0 +1,12 @@
+[
+    {
+        "caption": "FTG SFTP: Upload Project",
+        "command": "ftg_upload",
+        "args": { "local_subdirs": ["./"] }
+    },
+    {
+        "caption": "FTG SFTP: Download Project",
+        "command": "ftg_download",
+        "args": { "remote_subdirs": ["/"] }
+    }
+]

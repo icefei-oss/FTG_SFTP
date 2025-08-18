@@ -1,0 +1,8 @@
+{
+    "winscp_path": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\WinSCP\\WinSCP.com",
+    "multi_thread": true,
+    "incremental_sync": true,
+    "sha_check": true,
+    "upload_on_save": true,
+    "log_panel": true
+}

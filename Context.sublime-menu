@@ -1,0 +1,19 @@
+[
+    {
+        "caption": "FTG SFTP",
+        "children": [
+            {
+                "caption": "Upload Current File",
+                "command": "ftg_upload",
+                "args": { "files": [] }
+            },
+            {
+                "caption": "Download Current File",
+                "command": "ftg_download",
+                "args": { "files": [] }
+            }
+        ]
+    }
+]
+
+

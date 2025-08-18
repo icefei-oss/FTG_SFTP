@@ -1,0 +1,27 @@
+[
+    {
+        "caption": "FTG SFTP",
+        "children": [
+            {
+                "caption": "Upload File",
+                "command": "ftg_upload",
+                "args": { "files": [] }
+            },
+            {
+                "caption": "Upload Folder",
+                "command": "ftg_upload",
+                "args": { "dirs": [] }
+            },
+            {
+                "caption": "Download File",
+                "command": "ftg_download",
+                "args": { "files": [] }
+            },
+            {
+                "caption": "Download Folder",
+                "command": "ftg_download",
+                "args": { "dirs": [] }
+            }
+        ]
+    }
+]
