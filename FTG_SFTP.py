@@ -20,6 +20,8 @@ MULTI_THREAD = settings.get("multi_thread", True)
 INCREMENTAL_SYNC = settings.get("incremental_sync", True)
 SHA_CHECK = settings.get("sha_check", True)
 
+_config_cache = {}
+
 # 全局锁，保证日志输出线程安全
 output_lock = threading.Lock()
 
@@ -34,6 +36,10 @@ def load_project_config(window, silent=False):
     if not project_folders:
         return None
     root = project_folders[0]
+
+    if root in _config_cache:
+        return _config_cache[root]
+
     config_path = os.path.join(root, "ftg-config.json")
     if not os.path.exists(config_path):
         if not silent:
@@ -41,7 +47,9 @@ def load_project_config(window, silent=False):
         return None
     try:
         with open(config_path, "r", encoding="utf-8") as f:
-            return json.load(f), root
+            config = json.load(f)
+            _config_cache[root] = (config, root)
+            return config, root
     except Exception as e:
         if not silent:
             sublime.error_message("读取配置失败: {}".format(str(e)))
@@ -76,7 +84,6 @@ def run_winscp(script_lines):
 
     # 调试输出（开发用）
     print("DEBUG WinSCP script ==================")
-    print(script_content)
     print("script path =", script_path)
     print("log path =", log_path)
     print("======================================")
@@ -110,21 +117,6 @@ def run_winscp(script_lines):
                 os.remove(script_path)
         except:
             pass
-
-def show_output_panel(window, content):
-    """
-    线程安全的日志输出到 Sublime 面板
-    """
-    if not window:
-        return
-
-    def append():
-        with output_lock:
-            panel = window.create_output_panel("ftg_sftp")
-            panel.run_command("append", {"characters": content})
-            window.run_command("show_panel", {"panel": "output.ftg_sftp"})
-
-    sublime.set_timeout(append, 0)  # ✅ 在主线程里更新 UI
 
 def normalize_path(path):
     """规范化路径，解决双盘符问题"""
@@ -189,11 +181,19 @@ def build_winscp_script(config, local_path, remote_path, action="put"):
 # 输出面板工具函数
 # -------------------------------
 def show_output_panel(window, content):
+    """
+    线程安全的日志输出到 Sublime 面板
+    """
     if not window:
         return
-    panel = window.create_output_panel("ftg_sftp")
-    panel.run_command("append", {"characters": content})
-    window.run_command("show_panel", {"panel": "output.ftg_sftp"})
+
+    def append():
+        with output_lock:
+            panel = window.create_output_panel("ftg_sftp")
+            panel.run_command("append", {"characters": content})
+            window.run_command("show_panel", {"panel": "output.ftg_sftp"})
+
+    sublime.set_timeout(append, 0)  # ✅ 在主线程里更新 UI
 
 # -------------------------------
 # 核心上传/下载函数
