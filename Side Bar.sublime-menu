@@ -3,24 +3,33 @@
         "caption": "FTG SFTP",
         "children": [
             {
+                "caption": "Map to Remote...",
+                "command": "ftg_map_to_remote",
+                "args": { "dirs": [] }
+            },
+            {
                 "caption": "Upload File",
                 "command": "ftg_upload",
-                "args": { "files": [] }
+                "args": { "files": [] },
+                "visibility": "ftg_has_config"
             },
             {
                 "caption": "Upload Folder",
                 "command": "ftg_upload",
-                "args": { "dirs": [] }
+                "args": { "dirs": [] },
+                "visibility": "ftg_has_config"
             },
             {
                 "caption": "Download File",
                 "command": "ftg_download",
-                "args": { "files": [] }
+                "args": { "files": [] },
+                "visibility": "ftg_has_config"
             },
             {
                 "caption": "Download Folder",
                 "command": "ftg_download",
-                "args": { "dirs": [] }
+                "args": { "dirs": [] },
+                "visibility": "ftg_has_config"
             }
         ]
     }
